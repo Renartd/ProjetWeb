@@ -1,0 +1,106 @@
+📘 Analyse inversée (objet → fichiers)
+Dossier analysé : /home/labo/Bureau/Projet_Web
+==============================================
+
+🔄 Dépendances inversées (objet → fichiers)
+----------------------------------------------
+
+🔹 app présent dans :
+     - authController.js
+
+🔹 ask présent dans :
+     - createUser.js
+     - userManager.js
+
+🔹 createUser présent dans :
+     - createUser.js
+     - userManager.js
+
+🔹 hashed présent dans :
+     - authController.js
+     - createUser.js
+
+🔹 hashedPassword présent dans :
+     - authController.js
+     - createUser.js
+
+🔹 JWT_SECRET présent dans :
+     - authController.js
+     - authMiddleware.js
+
+🔹 ok présent dans :
+     - authController.js
+     - authMiddleware.js
+     - eslint.config.js
+
+🔹 password présent dans :
+     - authController.js
+     - authController.js
+     - authController.js
+     - createUser.js
+     - createUser.js
+     - db.js
+     - db.js
+     - db.js
+     - userManager.js
+
+🔹 pool présent dans :
+     - authController.js
+     - createUser.js
+     - userManager.js
+
+🔹 PORT présent dans :
+     - db.js
+
+🔹 requireAuth présent dans :
+     - authController.js
+
+🔹 res présent dans :
+     - authController.js
+     - authController.js
+     - authMiddleware.js
+     - authMiddleware.js
+     - createUser.js
+     - createUser.js
+     - eslint.config.js
+     - eslint.config.js
+     - server.js
+     - server.js
+
+🔹 rl présent dans :
+     - createUser.js
+     - userManager.js
+
+🔹 row présent dans :
+     - authController.js
+     - createUser.js
+     - eslint.config.js
+
+🔹 token présent dans :
+     - authController.js
+     - authMiddleware.js
+     - authMiddleware.js
+
+🔹 user présent dans :
+     - authController.js
+     - authMiddleware.js
+     - authMiddleware.js
+     - createUser.js
+     - createUser.js
+     - db.js
+     - db.js
+
+🔹 username présent dans :
+     - authController.js
+     - authController.js
+     - authController.js
+     - authController.js
+     - createUser.js
+     - createUser.js
+     - createUser.js
+     - userManager.js
+
+🔹 user présent dans :
+     - userManager.js
+
+✔️ Analyse inversée terminée. Résultat dans : /home/labo/Bureau/Projet_Web/script/dependance/dependencies_by_object.txt

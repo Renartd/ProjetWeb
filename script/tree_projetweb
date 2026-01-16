@@ -1,0 +1,83 @@
+#!/bin/bash
+
+USER_HOME="$(getent passwd $(logname) | cut -d: -f6)"
+PROJECT_DIR="$USER_HOME/Bureau/Projet_Web"
+
+BACKEND="$PROJECT_DIR/event-backend"
+FRONTEND="$PROJECT_DIR/event-frontend"
+SCRIPTS="$PROJECT_DIR/script"
+
+EXCLUDES="node_modules|.git|dist|build|.vite"
+
+show_tree() {
+    local TARGET="$1"
+    local FULL="$2"
+
+    if [ ! -d "$TARGET" ]; then
+        echo "❌ Dossier introuvable : $TARGET"
+        exit 1
+    fi
+
+    if command -v tree >/dev/null 2>&1; then
+        if [ "$FULL" = "1" ]; then
+            tree -a "$TARGET"
+        else
+            tree -a -I "$EXCLUDES" "$TARGET"
+        fi
+    else
+        echo "⚠️ tree non installé, utilisation de find"
+        if [ "$FULL" = "1" ]; then
+            find "$TARGET"
+        else
+            find "$TARGET" \
+                -not -path "*/node_modules*" \
+                -not -path "*/.git*" \
+                -not -path "*/dist*" \
+                -not -path "*/build*" \
+                -not -path "*/.vite*" \
+                -not -name "node_modules" \
+                -not -name ".git" \
+                -not -name "dist" \
+                -not -name "build" \
+                -not -name ".vite"
+        fi
+    fi
+}
+
+case "$1" in
+    --backend)
+        echo "🌲 Arborescence BACKEND"
+        show_tree "$BACKEND" 0
+        ;;
+    --frontend)
+        echo "🌲 Arborescence FRONTEND"
+        show_tree "$FRONTEND" 0
+        ;;
+    --scripts)
+        echo "🌲 Arborescence SCRIPTS"
+        show_tree "$SCRIPTS" 0
+        ;;
+    --full)
+        echo "🌲 Arborescence COMPLETE (FULL)"
+        show_tree "$PROJECT_DIR" 1
+        ;;
+    --help)
+        echo "=============================================="
+        echo "        🌲 Aide tree_projetweb"
+        echo "=============================================="
+        echo "Sans option : arborescence propre du projet"
+        echo ""
+        echo "Options :"
+        echo "  --backend    → Arborescence du backend"
+        echo "  --frontend   → Arborescence du frontend"
+        echo "  --scripts    → Arborescence des scripts"
+        echo "  --full       → Arborescence complète (inclut node_modules)"
+        echo "  --help       → Affiche cette aide"
+        echo "=============================================="
+        ;;
+    *)
+        echo "🌲 Arborescence du Projet Web"
+        show_tree "$PROJECT_DIR" 0
+        ;;
+esac
+

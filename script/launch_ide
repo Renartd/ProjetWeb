@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Dossier racine du projet
+PROJECT_DIR="$HOME/Bureau/Projet_Web"
+
+# Vérifie que VS Code est installé
+if ! command -v code >/dev/null 2>&1; then
+    echo "❌ VS Code n'est pas installé ou 'code' n'est pas dans le PATH."
+    exit 1
+fi
+
+echo "🚀 Ouverture de VS Code dans : $PROJECT_DIR"
+code "$PROJECT_DIR"

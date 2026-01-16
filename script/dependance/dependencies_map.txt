@@ -1,0 +1,134 @@
+📘 Analyse des dépendances du projet
+Dossier analysé : /home/labo/Bureau/Projet_Web
+==============================================
+
+📄 db.js
+----------------------------------------------
+🔹 pool utilisé dans :
+     - authController.js
+     - createUser.js
+     - userManager.js
+
+📄 authMiddleware.js
+----------------------------------------------
+🔹 JWT_SECRET utilisé dans :
+     - authController.js
+🔹 requireAuth utilisé dans :
+     - authController.js
+🔹 authHeader utilisé dans :
+🔹 token utilisé dans :
+     - authController.js
+🔹 decoded utilisé dans :
+
+📄 authController.js
+----------------------------------------------
+🔹 JWT_SECRET utilisé dans :
+     - authMiddleware.js
+🔹 signup utilisé dans :
+🔹 existingUser utilisé dans :
+🔹 hashedPassword utilisé dans :
+     - createUser.js
+🔹 newUser utilisé dans :
+🔹 token utilisé dans :
+     - authMiddleware.js
+🔹 login utilisé dans :
+🔹 user utilisé dans :
+     - db.js
+     - authMiddleware.js
+     - createUser.js
+     - userManager.js
+🔹 storedUser utilisé dans :
+🔹 isMatch utilisé dans :
+🔹 token utilisé dans :
+     - authMiddleware.js
+🔹 getProfile utilisé dans :
+
+📄 server.js
+----------------------------------------------
+🔹 app utilisé dans :
+     - authController.js
+🔹 PORT utilisé dans :
+     - db.js
+
+📄 createUser.js
+----------------------------------------------
+🔹 rl utilisé dans :
+     - userManager.js
+🔹 ask utilisé dans :
+     - userManager.js
+🔹 createUser utilisé dans :
+     - userManager.js
+🔹 username utilisé dans :
+     - authController.js
+     - userManager.js
+🔹 password utilisé dans :
+     - db.js
+     - authController.js
+     - userManager.js
+🔹 hashedPassword utilisé dans :
+     - authController.js
+🔹 result utilisé dans :
+
+📄 userManager.js
+----------------------------------------------
+🔹 rl utilisé dans :
+     - createUser.js
+🔹 ask utilisé dans :
+     - createUser.js
+🔹 createUser utilisé dans :
+     - createUser.js
+🔹 username utilisé dans :
+     - authController.js
+     - createUser.js
+🔹 password utilisé dans :
+     - db.js
+     - authController.js
+     - createUser.js
+🔹 hashed utilisé dans :
+     - authController.js
+     - createUser.js
+🔹 deleteUser utilisé dans :
+🔹 username utilisé dans :
+     - authController.js
+     - createUser.js
+🔹 res utilisé dans :
+     - authMiddleware.js
+     - authController.js
+     - server.js
+     - createUser.js
+     - eslint.config.js
+🔹 testUsers utilisé dans :
+🔹 res utilisé dans :
+     - authMiddleware.js
+     - authController.js
+     - server.js
+     - createUser.js
+     - eslint.config.js
+🔹 row utilisé dans :
+     - authController.js
+     - createUser.js
+     - eslint.config.js
+🔹 username utilisé dans :
+     - authController.js
+     - createUser.js
+🔹 password utilisé dans :
+     - db.js
+     - authController.js
+     - createUser.js
+🔹 userRes utilisé dans :
+🔹 user utilisé dans :
+     - db.js
+     - authMiddleware.js
+     - authController.js
+     - createUser.js
+🔹 ok utilisé dans :
+     - authMiddleware.js
+     - authController.js
+     - eslint.config.js
+🔹 mainMenu utilisé dans :
+🔹 choice utilisé dans :
+
+📄 eslint.config.js
+----------------------------------------------
+
+✔️ Analyse terminée. Résultat dans : /home/labo/Bureau/Projet_Web/script/dependance/dependencies_map.txt

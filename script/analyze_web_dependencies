@@ -1,0 +1,79 @@
+#!/bin/bash
+
+TARGET_DIR="${1:-.}"
+
+# Chemins des fichiers de sortie
+OUTPUT_FILE="$HOME/Bureau/Projet_Web/script/dependance/dependencies_map.txt"
+OUTPUT_REVERSE="$HOME/Bureau/Projet_Web/script/dependance/dependencies_by_object.txt"
+
+# S'assurer que le dossier existe
+mkdir -p "$HOME/Bureau/Projet_Web/script/dependance"
+
+# En-têtes
+echo "📘 Analyse des dépendances du projet" > "$OUTPUT_FILE"
+echo "Dossier analysé : $TARGET_DIR" >> "$OUTPUT_FILE"
+echo "==============================================" >> "$OUTPUT_FILE"
+
+echo "📘 Analyse inversée (objet → fichiers)" > "$OUTPUT_REVERSE"
+echo "Dossier analysé : $TARGET_DIR" >> "$OUTPUT_REVERSE"
+echo "==============================================" >> "$OUTPUT_REVERSE"
+
+# Trouver les fichiers JS (sans node_modules)
+FILES=$(find "$TARGET_DIR" -type f -name "*.js" -not -path "*/node_modules/*")
+
+# Fichier temporaire pour l'analyse inversée
+TMP_REVERSE=$(mktemp)
+
+for FILE in $FILES; do
+    BASENAME=$(basename "$FILE")
+
+    echo "" >> "$OUTPUT_FILE"
+    echo "📄 $BASENAME" >> "$OUTPUT_FILE"
+    echo "----------------------------------------------" >> "$OUTPUT_FILE"
+
+    # Extraire les fonctions, classes, constantes
+    DEFINITIONS=$(grep -Eo "function [a-zA-Z0-9_]+|class [a-zA-Z0-9_]+|const [a-zA-Z0-9_]+" "$FILE" | awk '{print $2}')
+
+    for OBJ in $DEFINITIONS; do
+        echo "🔹 $OBJ utilisé dans :" >> "$OUTPUT_FILE"
+
+        for OTHER in $FILES; do
+            if [ "$OTHER" != "$FILE" ]; then
+                if grep -q "$OBJ" "$OTHER"; then
+                    OTHER_BASE=$(basename "$OTHER")
+                    echo "     - $OTHER_BASE" >> "$OUTPUT_FILE"
+
+                    # Ajout dans la table inversée
+                    echo "$OBJ:$OTHER_BASE" >> "$TMP_REVERSE"
+                fi
+            fi
+        done
+    done
+done
+
+# Génération du fichier inversé
+echo "" >> "$OUTPUT_REVERSE"
+echo "🔄 Dépendances inversées (objet → fichiers)" >> "$OUTPUT_REVERSE"
+echo "----------------------------------------------" >> "$OUTPUT_REVERSE"
+
+sort "$TMP_REVERSE" | while IFS=":" read -r OBJ FILE; do
+    if [ "$OBJ" != "$LAST_OBJ" ]; then
+        echo "" >> "$OUTPUT_REVERSE"
+        echo "🔹 $OBJ présent dans :" >> "$OUTPUT_REVERSE"
+        LAST_OBJ="$OBJ"
+    fi
+    echo "     - $FILE" >> "$OUTPUT_REVERSE"
+done
+
+rm "$TMP_REVERSE"
+
+echo "" >> "$OUTPUT_FILE"
+echo "✔️ Analyse terminée. Résultat dans : $OUTPUT_FILE" >> "$OUTPUT_FILE"
+
+echo "" >> "$OUTPUT_REVERSE"
+echo "✔️ Analyse inversée terminée. Résultat dans : $OUTPUT_REVERSE" >> "$OUTPUT_REVERSE"
+
+# Ouvrir dans VS Code si disponible
+if command -v code >/dev/null 2>&1; then
+    code "$OUTPUT_FILE" "$OUTPUT_REVERSE"
+fi
