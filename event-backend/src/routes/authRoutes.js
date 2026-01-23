@@ -1,0 +1,16 @@
+import express from "express";
+import { signup, login, getProfile } from "../controllers/authController.js";
+import { requireAuth } from "../middleware/authMiddleware.js";
+
+const router = express.Router();
+
+// Inscription
+router.post("/signup", signup);
+
+// Connexion
+router.post("/login", login);
+
+// Profil utilisateur (protégé)
+router.get("/me", requireAuth, getProfile);
+
+export default router;

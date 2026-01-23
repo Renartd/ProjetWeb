@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
 
 // Importation du pool PostgreSQL (connexion à la base)
 // → pool.query() permet d'exécuter des requêtes SQL
-import pool from "./db.js";
+import pool from "../db.js";
 
 // Importation de dotenv : permet de lire les variables du fichier .env
 import dotenv from "dotenv";

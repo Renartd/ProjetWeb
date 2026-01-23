@@ -4,7 +4,7 @@
 // Importation des modules nécessaires
 import readline from "readline";   // Pour lire les entrées clavier
 import bcrypt from "bcryptjs";     // Pour hasher le mot de passe
-import pool from "./db.js";       // Connexion PostgreSQL
+import pool from "../db.js";       // Connexion PostgreSQL
 
 // Interface pour lire les entrées utilisateur dans le terminal
 const rl = readline.createInterface({

@@ -1,3 +1,4 @@
+import dotenv from "dotenv"; dotenv.config();
 import jwt from "jsonwebtoken";
 
 // Récupération de la clé secrète depuis le .env
