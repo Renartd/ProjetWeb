@@ -1,0 +1,37 @@
+import eventManager from "../managers/eventManager.js";
+
+const eventService = {
+  async listEvents() {
+    return eventManager.getAllEvents();
+  },
+
+  async getEvent(id) {
+    return eventManager.getEventById(id);
+  },
+
+  async createEvent(data, userId) {
+    return eventManager.createEvent({ ...data, organizerId: userId });
+  },
+
+  async updateEvent(id, data, userId) {
+    const isOrganizer = await eventManager.isOrganizer(id, userId);
+    if (!isOrganizer) {
+      const err = new Error("Forbidden");
+      err.status = 403;
+      throw err;
+    }
+    return eventManager.updateEvent(id, data);
+  },
+
+  async deleteEvent(id, userId) {
+    const isOrganizer = await eventManager.isOrganizer(id, userId);
+    if (!isOrganizer) {
+      const err = new Error("Forbidden");
+      err.status = 403;
+      throw err;
+    }
+    return eventManager.deleteEvent(id);
+  }
+};
+
+export default eventService;
