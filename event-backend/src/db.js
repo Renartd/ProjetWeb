@@ -1,15 +1,9 @@
-import pkg from "pg";
-import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
+const { Pool } = require("pg");
+const dotenv = require("dotenv");
+const path = require("path");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Charge le .env à la racine du projet, peu importe d'où le script est lancé
+// Charge le .env à la racine du projet
 dotenv.config({ path: path.join(__dirname, "../.env") });
-
-const { Pool } = pkg;
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -19,4 +13,4 @@ const pool = new Pool({
   port: process.env.DB_PORT || 5432,
 });
 
-export default pool;
+module.exports = pool;

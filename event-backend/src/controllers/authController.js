@@ -1,14 +1,11 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import {
-  registerUser,
-  authenticateUser
-} from "../services/userService.js";
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const { registerUser, authenticateUser } = require("../services/userService");
 
 // =========================
 //   INSCRIPTION
 // =========================
-export const signup = async (req, res) => {
+const signup = async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -30,7 +27,7 @@ export const signup = async (req, res) => {
 // =========================
 //   CONNEXION
 // =========================
-export const login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -55,9 +52,15 @@ export const login = async (req, res) => {
 // =========================
 //   PROFIL UTILISATEUR
 // =========================
-export const getProfile = async (req, res) => {
+const getProfile = async (req, res) => {
   res.json({
     message: "Authenticated user",
     user: req.user
   });
+};
+
+module.exports = {
+  signup,
+  login,
+  getProfile
 };

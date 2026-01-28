@@ -1,4 +1,4 @@
-import eventManager from "../managers/eventManager.js";
+const eventManager = require("../managers/eventManager");
 
 const eventService = {
   async listEvents() {
@@ -34,4 +34,4 @@ const eventService = {
   }
 };
 
-export default eventService;
+module.exports = eventService;

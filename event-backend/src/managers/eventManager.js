@@ -1,4 +1,4 @@
-import pool from "../db.js";
+const pool = require("../db");
 
 const eventManager = {
   async getAllEvents() {
@@ -7,7 +7,9 @@ const eventManager = {
   },
 
   async getEventById(id) {
-    const result = await pool.query("SELECT * FROM events WHERE id = $1", [id]);
+    const result = await pool.query("SELECT * FROM events WHERE id = $1", [
+      id
+    ]);
     return result.rows[0];
   },
 
@@ -68,4 +70,4 @@ const eventManager = {
   }
 };
 
-export default eventManager;
+module.exports = eventManager;

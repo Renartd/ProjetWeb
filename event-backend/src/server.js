@@ -1,9 +1,10 @@
-console.log(">>> Chargement eventRoutes depuis :", new URL("./routes/eventRoutes.js", import.meta.url).pathname);
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import authRoutes from "./routes/authRoutes.js";
-import eventRoutes from "./routes/eventRoutes.js";
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+
+const authRoutes = require("./routes/authRoutes");
+const eventRoutes = require("./routes/eventRoutes");
+const registrationRoutes = require("./routes/registrationRoutes");
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 // Routes
 app.use("/auth", authRoutes);
 app.use("/events", eventRoutes);
+app.use("/api", registrationRoutes);
 
 // Route de test
 app.get("/", (req, res) => {

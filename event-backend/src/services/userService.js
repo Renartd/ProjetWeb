@@ -1,9 +1,9 @@
 // userService.js — logique métier utilisateur
-import bcrypt from "bcryptjs";
-import {
+const bcrypt = require("bcryptjs");
+const {
   insertUser,
   findUserByUsername
-} from "../managers/userManager.js";
+} = require("../managers/userManager");
 
 /**
  * Inscription utilisateur
@@ -13,7 +13,7 @@ import {
  * - Hash le mot de passe
  * - Insère dans la base via userManager
  */
-export async function registerUser(username, password) {
+async function registerUser(username, password) {
   if (!username || !password) {
     throw new Error("Missing username or password");
   }
@@ -40,7 +40,7 @@ export async function registerUser(username, password) {
  * - Vérifie si l'utilisateur existe
  * - Compare le mot de passe
  */
-export async function authenticateUser(username, password) {
+async function authenticateUser(username, password) {
   if (!username || !password) {
     throw new Error("Missing username or password");
   }
@@ -57,3 +57,8 @@ export async function authenticateUser(username, password) {
 
   return user; // { id, username, password: hash }
 }
+
+module.exports = {
+  registerUser,
+  authenticateUser
+};
