@@ -23,7 +23,15 @@ const registrationManager = {
     return result.rows[0] || null;
   },
 
-  async countRegistrations(eventId) {
+  async findByUserAndEvent(userId, eventId) {
+    const result = await db.query(
+      "SELECT * FROM registrations WHERE user_id = $1 AND event_id = $2",
+      [userId, eventId]
+    );
+    return result.rows[0] || null;
+  },
+
+  async countParticipants(eventId) {
     const result = await db.query(
       "SELECT COUNT(*) FROM registrations WHERE event_id = $1",
       [eventId]
@@ -55,5 +63,3 @@ const registrationManager = {
 };
 
 module.exports = registrationManager;
-
-

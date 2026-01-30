@@ -4,23 +4,22 @@ const eventManager = require("../managers/eventManager");
 const registrationService = {
   async register(userId, eventId) {
     const event = await eventManager.getEventById(eventId);
-    if (!event) throw new Error("Event not found");
+    if (!event) throw new Error("EVENT_NOT_FOUND");
 
-    const existing = await registrationManager.findRegistration(
-      userId,
-      eventId
-    );
-    if (existing) throw new Error("Already registered");
+    const existing = await registrationManager.findByUserAndEvent(userId, eventId);
+    if (existing) throw new Error("ALREADY_REGISTERED");
+
+    const participants = await registrationManager.countParticipants(eventId);
+    if (participants >= event.capacity) {
+      throw new Error("EVENT_FULL");
+    }
 
     return registrationManager.insertRegistration(userId, eventId);
   },
 
   async unregister(userId, eventId) {
-    const existing = await registrationManager.findRegistration(
-      userId,
-      eventId
-    );
-    if (!existing) throw new Error("Not registered");
+    const existing = await registrationManager.findByUserAndEvent(userId, eventId);
+    if (!existing) throw new Error("NOT_REGISTERED");
 
     return registrationManager.deleteRegistration(userId, eventId);
   },

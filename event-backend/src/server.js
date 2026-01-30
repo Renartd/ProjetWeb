@@ -10,21 +10,18 @@ dotenv.config();
 
 const app = express();
 
-// Middlewares globaux
 app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use("/auth", authRoutes);
-app.use("/events", eventRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/events", eventRoutes);
 app.use("/api", registrationRoutes);
 
-// Route de test
 app.get("/", (req, res) => {
   res.send("Backend Projetweb opérationnel !");
 });
 
-// Port d'écoute
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

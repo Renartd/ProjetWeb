@@ -13,6 +13,14 @@ const eventManager = {
     return result.rows[0];
   },
 
+  async getCapacity(eventId) {
+    const result = await pool.query(
+      "SELECT capacity FROM events WHERE id = $1",
+      [eventId]
+    );
+    return result.rows[0] ? result.rows[0].capacity : null;
+  },
+
   async createEvent(data) {
     const { title, description, date, capacity, location, organizerId } = data;
 

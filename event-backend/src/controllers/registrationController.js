@@ -10,7 +10,17 @@ const registrationController = {
       res.status(201).json(result);
     } catch (err) {
       console.error("Register error:", err);
-      res.status(400).json({ error: err.message });
+
+      const errors = {
+        EVENT_NOT_FOUND: { status: 404, message: "Événement introuvable." },
+        ALREADY_REGISTERED: { status: 400, message: "Vous êtes déjà inscrit." },
+        EVENT_FULL: { status: 400, message: "L'événement est complet." }
+      };
+
+      const e = errors[err.message];
+      if (e) return res.status(e.status).json({ error: e.message });
+
+      res.status(500).json({ error: "Erreur serveur." });
     }
   },
 
@@ -23,7 +33,12 @@ const registrationController = {
       res.json(result);
     } catch (err) {
       console.error("Unregister error:", err);
-      res.status(400).json({ error: err.message });
+
+      if (err.message === "NOT_REGISTERED") {
+        return res.status(400).json({ error: "Vous n'êtes pas inscrit." });
+      }
+
+      res.status(500).json({ error: "Erreur serveur." });
     }
   },
 
@@ -34,19 +49,18 @@ const registrationController = {
       res.json(participants);
     } catch (err) {
       console.error("Participants error:", err);
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: "Erreur serveur." });
     }
   },
 
   async getUserRegistrations(req, res) {
     try {
       const userId = req.user.id;
-      const registrations =
-        await registrationService.getUserRegistrations(userId);
+      const registrations = await registrationService.getUserRegistrations(userId);
       res.json(registrations);
     } catch (err) {
       console.error("User registrations error:", err);
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: "Erreur serveur." });
     }
   }
 };
