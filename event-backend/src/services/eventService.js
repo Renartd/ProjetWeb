@@ -9,6 +9,10 @@ const eventService = {
     return eventManager.getEventById(id);
   },
 
+  async getEventDetails(id) {
+    return eventManager.getEventWithRemaining(id);
+  },
+
   async createEvent(data, userId) {
     return eventManager.createEvent({ ...data, organizerId: userId });
   },

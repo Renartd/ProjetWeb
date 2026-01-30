@@ -13,7 +13,7 @@ const eventController = {
 
   async get(req, res) {
     try {
-      const event = await eventService.getEvent(req.params.id);
+      const event = await eventService.getEventDetails(req.params.id);
       if (!event) return res.status(404).json({ error: "Event not found" });
       res.json(event);
     } catch (err) {

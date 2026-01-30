@@ -1,36 +1,38 @@
-const pool = require("../db");
+const db = require("../db");
 
 const eventManager = {
   async getAllEvents() {
-    const result = await pool.query("SELECT * FROM events ORDER BY date ASC");
+    const result = await db.query("SELECT * FROM events ORDER BY date ASC");
     return result.rows;
   },
 
   async getEventById(id) {
-    const result = await pool.query("SELECT * FROM events WHERE id = $1", [
-      id
-    ]);
-    return result.rows[0];
+    const result = await db.query("SELECT * FROM events WHERE id = $1", [id]);
+    return result.rows[0] || null;
   },
 
-  async getCapacity(eventId) {
-    const result = await pool.query(
-      "SELECT capacity FROM events WHERE id = $1",
-      [eventId]
-    );
-    return result.rows[0] ? result.rows[0].capacity : null;
+  async getEventWithRemaining(eventId) {
+    const query = `
+      SELECT 
+        e.*,
+        (e.capacity - COUNT(r.user_id)) AS remaining
+      FROM events e
+      LEFT JOIN registrations r ON r.event_id = e.id
+      WHERE e.id = $1
+      GROUP BY e.id;
+    `;
+    const result = await db.query(query, [eventId]);
+    return result.rows[0] || null;
   },
 
-  async createEvent(data) {
-    const { title, description, date, capacity, location, organizerId } = data;
-
-    const result = await pool.query(
-      `INSERT INTO events (title, description, date, capacity, location, organizer_id)
+  async createEvent(event) {
+    const { title, description, date, location, capacity, organizerId } = event;
+    const result = await db.query(
+      `INSERT INTO events (title, description, date, location, capacity, organizer_id)
        VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING *`,
-      [title, description, date, capacity, location, organizerId]
+      [title, description, date, location, capacity, organizerId]
     );
-
     return result.rows[0];
   },
 
@@ -39,40 +41,35 @@ const eventManager = {
     const values = [];
     let index = 1;
 
-    for (const key of ["title", "description", "date", "capacity", "location"]) {
-      if (data[key] !== undefined) {
-        fields.push(`${key} = $${index}`);
-        values.push(data[key]);
-        index++;
-      }
+    for (const key in data) {
+      fields.push(`${key} = $${index}`);
+      values.push(data[key]);
+      index++;
     }
-
-    if (fields.length === 0) return null;
 
     values.push(id);
 
-    const result = await pool.query(
+    const result = await db.query(
       `UPDATE events SET ${fields.join(", ")} WHERE id = $${index} RETURNING *`,
       values
     );
 
-    return result.rows[0];
+    return result.rows[0] || null;
   },
 
   async deleteEvent(id) {
-    const result = await pool.query(
-      "DELETE FROM events WHERE id = $1 RETURNING id",
+    const result = await db.query(
+      "DELETE FROM events WHERE id = $1 RETURNING *",
       [id]
     );
-    return result.rowCount > 0;
+    return result.rows[0] || null;
   },
 
   async isOrganizer(eventId, userId) {
-    const result = await pool.query(
+    const result = await db.query(
       "SELECT organizer_id FROM events WHERE id = $1",
       [eventId]
     );
-
     if (result.rows.length === 0) return false;
     return result.rows[0].organizer_id === userId;
   }
