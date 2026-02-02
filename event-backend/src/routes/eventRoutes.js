@@ -3,7 +3,7 @@ const eventController = require("../controllers/eventController");
 const { requireAuth } = require("../middleware/authMiddleware");
 const {
   validateCreateEvent,
-  validateUpdateEvent
+  validateUpdateEvent,
 } = require("../validators/eventValidator");
 
 const router = express.Router();

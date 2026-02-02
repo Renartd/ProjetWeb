@@ -15,24 +15,53 @@ const eventManager = {
     const query = `
       SELECT 
         e.*,
-        (e.capacity - COUNT(r.user_id)) AS remaining
+        (e.capacity - COUNT(r.user_id)) AS remaining,
+
+        json_build_object(
+          'id', u.id,
+          'username', u.username
+        ) AS organizer,
+
+        COALESCE(
+          json_agg(
+            json_build_object(
+              'id', p.id,
+              'username', p.username
+            )
+          ) FILTER (WHERE p.id IS NOT NULL),
+          '[]'
+        ) AS participants
+
       FROM events e
+      LEFT JOIN users u ON u.id = e.organizer_id
       LEFT JOIN registrations r ON r.event_id = e.id
+      LEFT JOIN users p ON p.id = r.user_id
+
       WHERE e.id = $1
-      GROUP BY e.id;
+      GROUP BY e.id, u.id;
     `;
+
     const result = await db.query(query, [eventId]);
     return result.rows[0] || null;
   },
 
   async createEvent(event) {
     const { title, description, date, location, capacity, organizerId } = event;
+
+    // 🔒 Sécurité : empêcher les dates passées
+    const now = new Date();
+    const eventDate = new Date(date);
+    if (eventDate < now) {
+      throw new Error("La date de l'événement ne peut pas être dans le passé.");
+    }
+
     const result = await db.query(
       `INSERT INTO events (title, description, date, location, capacity, organizer_id)
        VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING *`,
       [title, description, date, location, capacity, organizerId]
     );
+
     return result.rows[0];
   },
 

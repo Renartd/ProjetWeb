@@ -1,0 +1,25 @@
+.event-card {
+  display: block;
+  padding: 20px;
+  border-radius: 10px;
+  background: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-decoration: none;
+  color: #333;
+  transition: transform 0.2s ease;
+
+  h3 {
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+
+  p {
+    margin: 5px 0;
+    font-size: 15px;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    background: #eef6ff;
+  }
+}

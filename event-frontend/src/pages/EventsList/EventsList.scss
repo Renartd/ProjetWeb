@@ -1,0 +1,30 @@
+.events-list-page {
+  padding: 40px;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .loading {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+  }
+
+  .error-box {
+    background: #ffdddd;
+    color: #a40000;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border: 1px solid #ffb3b3;
+    text-align: center;
+  }
+
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+}

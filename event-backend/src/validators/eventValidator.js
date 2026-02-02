@@ -21,10 +21,13 @@ function validatePositiveInteger(field, value) {
   return null;
 }
 
-function validateDate(field, value) {
+function validateDate(field, value, checkNotPast = false) {
   const d = new Date(value);
   if (isNaN(d.getTime())) {
     return `${field} doit être une date valide`;
+  }
+  if (checkNotPast && d < new Date()) {
+    return `${field} ne peut pas être dans le passé`;
   }
   return null;
 }
@@ -45,7 +48,7 @@ function validateCreateEvent(data) {
     if (descError) return { field: "description", message: descError };
   }
 
-  const dateError = validateDate("date", date);
+  const dateError = validateDate("date", date, true);
   if (dateError) return { field: "date", message: dateError };
 
   const capacityError = validatePositiveInteger("capacity", capacity);
@@ -68,7 +71,7 @@ function validateUpdateEvent(data) {
   }
 
   if (date !== undefined) {
-    const dateError = validateDate("date", date);
+    const dateError = validateDate("date", date, true);
     if (dateError) return { field: "date", message: dateError };
   }
 
@@ -82,5 +85,5 @@ function validateUpdateEvent(data) {
 
 module.exports = {
   validateCreateEvent,
-  validateUpdateEvent
+  validateUpdateEvent,
 };

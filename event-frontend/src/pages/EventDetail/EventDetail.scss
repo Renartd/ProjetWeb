@@ -1,0 +1,60 @@
+.event-detail-page {
+  padding: 40px;
+  max-width: 600px;
+  margin: auto;
+
+  h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  p {
+    margin: 10px 0;
+    font-size: 16px;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 10px 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+      background: #0056b3;
+    }
+
+    &.danger {
+      background: #dc3545;
+
+      &:hover {
+        background: #b02a37;
+      }
+    }
+  }
+
+  .organizer-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .loading {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+  }
+
+  .error-box {
+    background: #ffdddd;
+    color: #a40000;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border: 1px solid #ffb3b3;
+    text-align: center;
+  }
+}

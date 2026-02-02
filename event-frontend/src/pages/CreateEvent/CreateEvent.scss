@@ -1,0 +1,62 @@
+.create-event-page {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 24px;
+  border-radius: 8px;
+  background: #f7f7f7;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  input,
+  textarea {
+    margin-top: 6px;
+    padding: 8px 10px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+
+  textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  button {
+    margin-top: 10px;
+    padding: 10px 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+      background: #0056b3;
+    }
+  }
+
+  .error {
+    color: #a40000;
+    background: #ffdddd;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ffb3b3;
+  }
+}

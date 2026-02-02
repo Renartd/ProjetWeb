@@ -7,7 +7,7 @@ const eventController = {
       res.json(events);
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: err.message });
     }
   },
 
@@ -18,7 +18,7 @@ const eventController = {
       res.json(event);
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: err.message });
     }
   },
 
@@ -28,7 +28,7 @@ const eventController = {
       res.status(201).json(event);
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: "Internal server error" });
+      res.status(400).json({ error: err.message });
     }
   },
 
@@ -43,9 +43,7 @@ const eventController = {
       res.json(event);
     } catch (err) {
       console.error(err);
-      if (err.status === 403)
-        return res.status(403).json({ error: "Forbidden" });
-      res.status(500).json({ error: "Internal server error" });
+      res.status(err.status || 400).json({ error: err.message });
     }
   },
 
@@ -56,9 +54,7 @@ const eventController = {
       res.status(204).send();
     } catch (err) {
       console.error(err);
-      if (err.status === 403)
-        return res.status(403).json({ error: "Forbidden" });
-      res.status(500).json({ error: "Internal server error" });
+      res.status(err.status || 400).json({ error: err.message });
     }
   }
 };

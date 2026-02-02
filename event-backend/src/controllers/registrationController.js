@@ -29,8 +29,10 @@ const registrationController = {
       const userId = req.user.id;
       const eventId = req.params.eventId;
 
-      const result = await registrationService.unregister(userId, eventId);
-      res.json(result);
+      await registrationService.unregister(userId, eventId);
+
+      // Désinscription réussie : aucun contenu, juste 204
+      return res.status(204).send();
     } catch (err) {
       console.error("Unregister error:", err);
 
