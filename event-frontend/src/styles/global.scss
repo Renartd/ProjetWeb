@@ -1,4 +1,89 @@
+/* ============================
+   GLOBAL STYLES (SCSS MODERNE)
+   ============================ */
+
+@use "./variables" as *;
+@use "./mixins" as *;
+
+/* Reset léger */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  background: #f5f6fa;
+  color: #333;
+}
+
+/* Conteneur générique */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Carte réutilisable */
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+/* Centrage vertical + horizontal */
+.center-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Inputs modernes */
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    border-color: #4a6cf7;
+    outline: none;
+  }
+}
+
+/* Bouton principal */
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background: #4a6cf7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #3b57c9;
+  }
+
+  &:disabled {
+    background: #9aa8e6;
+    cursor: not-allowed;
+  }
+}
+
+/* Boîte d'erreur */
+.error-box {
+  background: #ffdddd;
+  color: #a30000;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ffb3b3;
 }

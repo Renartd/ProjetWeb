@@ -14,20 +14,22 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <Link to="/events" className="logo">Events</Link>
+      <div className="nav-inner">
+        <Link to="/events" className="logo">Events</Link>
 
-      <div className="nav-links">
-        {token && <Link to="/events/new">Créer un événement</Link>}
+        <div className="nav-links">
+          {token && <Link to="/events/new">Créer un événement</Link>}
 
-        {!token && <Link to="/login">Connexion</Link>}
-        {!token && <Link to="/signup">Inscription</Link>}
+          {!token && <Link to="/login">Connexion</Link>}
+          {!token && <Link to="/signup">Inscription</Link>}
 
-        {token && (
-          <>
-            <span className="username">{user?.username}</span>
-            <button onClick={handleLogout}>Déconnexion</button>
-          </>
-        )}
+          {token && (
+            <>
+              <span className="username">{user?.username}</span>
+              <button onClick={handleLogout}>Déconnexion</button>
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );
