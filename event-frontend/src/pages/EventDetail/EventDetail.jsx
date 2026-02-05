@@ -78,18 +78,27 @@ const EventDetail = () => {
   };
 
   const handleDelete = async () => {
-    if (!token) {
-      setError("Vous devez être connecté pour supprimer un événement.");
-      return;
-    }
-    setError(null);
-    try {
-      await deleteEvent(id, token);
-      navigate("/events");
-    } catch (err) {
-      setError(err.message || "Erreur lors de la suppression.");
-    }
-  };
+  if (!token) {
+    setError("Vous devez être connecté pour supprimer un événement.");
+    return;
+  }
+
+  // 🔒 Confirmation avant suppression
+  const ok = window.confirm(
+    "Voulez-vous vraiment supprimer cet événement ? Cette action est irréversible."
+  );
+
+  if (!ok) return; // L'utilisateur annule → on ne fait rien
+
+  setError(null);
+  try {
+    await deleteEvent(id, token);
+    navigate("/events");
+  } catch (err) {
+    setError(err.message || "Erreur lors de la suppression.");
+  }
+};
+
 
   if (loading) return <p>Chargement...</p>;
   if (!event) return <p>Événement introuvable.</p>;
