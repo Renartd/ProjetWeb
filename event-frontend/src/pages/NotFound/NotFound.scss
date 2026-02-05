@@ -1,0 +1,23 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.not-found-page {
+  padding: 60px;
+  text-align: center;
+
+  h2 {
+    color: $blue-dark;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+
+  a {
+    @include button-primary;
+    padding: 12px 20px;
+    display: inline-block;
+  }
+}

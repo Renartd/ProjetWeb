@@ -1,62 +1,52 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+@use "sass:color";
+
 .create-event-page {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 24px;
-  border-radius: 8px;
-  background: #f7f7f7;
+  padding: 40px;
+  max-width: 800px;
+  margin: 0 auto;
 
   h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    color: $blue-dark;
   }
 
   form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    @include card;
+    padding: 30px;
   }
 
   label {
-    display: flex;
-    flex-direction: column;
     font-weight: 600;
-    font-size: 14px;
+    margin-bottom: 5px;
+    display: block;
   }
 
   input,
   textarea {
-    margin-top: 6px;
-    padding: 8px 10px;
-    font-size: 14px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+    width: 100%;
+    margin-bottom: 20px;
   }
 
   textarea {
-    min-height: 80px;
+    min-height: 100px;
     resize: vertical;
   }
 
   button {
+    @include button-primary;
+    width: 100%;
     margin-top: 10px;
-    padding: 10px 16px;
-    font-size: 16px;
-    border: none;
-    border-radius: 6px;
-    background: #007bff;
-    color: white;
-    cursor: pointer;
-
-    &:hover {
-      background: #0056b3;
-    }
   }
 
   .error {
-    color: #a40000;
     background: #ffdddd;
-    padding: 8px;
-    border-radius: 4px;
+    color: #a40000;
+    padding: 10px;
+    border-radius: $radius;
+    margin-bottom: 15px;
     border: 1px solid #ffb3b3;
   }
 }

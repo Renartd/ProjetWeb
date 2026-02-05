@@ -1,54 +1,42 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+@use "sass:color";
+
 .login-page {
+  padding: 40px;
   display: flex;
   justify-content: center;
-  padding-top: 80px;
 }
 
 .login-form {
-  width: 350px;
+  @include card;
+  width: 380px;
   padding: 30px;
-  border-radius: 10px;
-  background: #ffffff;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 
   h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    color: $blue-dark;
   }
 
   label {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
     font-weight: 600;
+    margin-bottom: 10px;
+    display: block;
 
     input {
+      width: 100%;
       margin-top: 5px;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 15px;
-
-      &:focus {
-        border-color: #007bff;
-        outline: none;
-      }
     }
   }
 
   button {
+    @include button-primary;
     width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 6px;
-    background: #007bff;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+    margin-top: 15px;
 
     &:disabled {
-      background: #6aa8e8;
+      background: color.adjust($blue-dark, $lightness: 20%);
       cursor: not-allowed;
     }
   }
@@ -57,7 +45,7 @@
     background: #ffdddd;
     color: #a40000;
     padding: 10px;
-    border-radius: 6px;
+    border-radius: $radius;
     margin-bottom: 15px;
     border: 1px solid #ffb3b3;
     text-align: center;
@@ -68,8 +56,7 @@
     text-align: center;
 
     a {
-      color: #007bff;
-      text-decoration: none;
+      color: $blue-accent;
       font-weight: 600;
 
       &:hover {

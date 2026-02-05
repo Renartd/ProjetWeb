@@ -70,10 +70,19 @@ const eventManager = {
     const values = [];
     let index = 1;
 
+    // ❌ Champs calculés ou non modifiables
+    const forbidden = ["remaining", "organizer", "participants", "id"];
+
     for (const key in data) {
+      if (forbidden.includes(key)) continue; // ← Ignore les champs interdits
+
       fields.push(`${key} = $${index}`);
       values.push(data[key]);
       index++;
+    }
+
+    if (fields.length === 0) {
+      throw new Error("Aucun champ valide à mettre à jour.");
     }
 
     values.push(id);

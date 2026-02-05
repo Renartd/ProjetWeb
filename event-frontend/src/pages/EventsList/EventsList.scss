@@ -1,9 +1,16 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
 .events-list-page {
   padding: 40px;
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
 
   h2 {
     text-align: center;
     margin-bottom: 30px;
+    color: $blue-dark;
   }
 
   .loading {
@@ -16,7 +23,7 @@
     background: #ffdddd;
     color: #a40000;
     padding: 10px;
-    border-radius: 6px;
+    border-radius: $radius;
     margin-bottom: 20px;
     border: 1px solid #ffb3b3;
     text-align: center;

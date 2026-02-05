@@ -1,25 +1,45 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+@use "sass:color";
+
 .event-card {
-  display: block;
+  @include card;
   padding: 20px;
-  border-radius: 10px;
-  background: #f9f9f9;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  text-decoration: none;
-  color: #333;
-  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 
   h3 {
-    margin-bottom: 10px;
+    color: $blue-dark;
+    margin-bottom: 5px;
     font-size: 20px;
   }
 
   p {
-    margin: 5px 0;
+    margin: 0;
     font-size: 15px;
+    color: $text-muted;
   }
 
-  &:hover {
-    transform: translateY(-4px);
-    background: #eef6ff;
+  .event-date {
+    font-weight: 600;
+    color: $blue-accent;
+  }
+
+  .event-location {
+    font-style: italic;
+  }
+
+  .actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+
+    a,
+    button {
+      @include button-primary;
+      padding: 8px 14px;
+      font-size: 14px;
+    }
   }
 }
