@@ -1,0 +1,37 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.edit-event-page {
+  padding: 40px;        // marge interne
+  max-width: 800px;     // largeur confortable
+  margin: 0 auto;       // centrage horizontal
+
+  h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: $blue-dark;
+  }
+
+  form {
+    @include card;      // joli fond + ombre Céphée
+    padding: 30px;      // espace interne du formulaire
+  }
+
+  label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  button {
+    @include button-primary;
+    width: 100%;
+    margin-top: 10px;
+  }
+}
