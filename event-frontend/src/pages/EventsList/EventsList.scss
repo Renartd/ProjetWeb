@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "../../styles/variables" as *;
 @use "../../styles/mixins" as *;
 
@@ -27,6 +28,78 @@
     margin-bottom: 20px;
     border: 1px solid #ffb3b3;
     text-align: center;
+  }
+
+  .search-bar {
+    width: 100%;
+    padding: 12px;
+    margin: 20px 0;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: $radius;
+  }
+
+  .toggle-filters-btn {
+    padding: 10px 15px;
+    background: $blue-dark;
+    color: white;
+    border: none;
+    border-radius: $radius;
+    cursor: pointer;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    transition: 0.2s;
+
+    &:hover {
+      background: color.adjust($blue-dark, $lightness: -10%);
+    }
+  }
+
+  /* Animation container */
+  .filters-wrapper {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+
+    &.open {
+      max-height: 300px;
+    }
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #f7f7f7;
+    border-radius: $radius;
+    border: 1px solid #ddd;
+
+    input {
+      padding: 10px;
+      font-size: 0.9rem;
+      border: 1px solid #ccc;
+      border-radius: $radius;
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .reset-btn {
+      padding: 10px 15px;
+      background: $blue-dark;
+      color: white;
+      border: none;
+      border-radius: $radius;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.2s;
+      min-width: 150px;
+
+      &:hover {
+        background: color.adjust($blue-dark, $lightness: -10%);
+      }
+    }
   }
 
   .events-grid {
