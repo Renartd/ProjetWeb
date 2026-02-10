@@ -15,11 +15,14 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="nav-left">
-        <Link to="/events" className="logo">Events</Link>
+        <Link to="/events" className="logo">
+          Events
+        </Link>
       </div>
 
       <div className="nav-right">
         {token && <Link to="/events/new">Créer un événement</Link>}
+        {token && <Link to="/my-events">Mes événements</Link>}
 
         {!token && <Link to="/login">Connexion</Link>}
         {!token && <Link to="/signup">Inscription</Link>}
@@ -32,8 +35,5 @@ export default function Navbar() {
         )}
       </div>
     </nav>
-
   );
 }
-
-

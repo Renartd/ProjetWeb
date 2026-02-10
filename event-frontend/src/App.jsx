@@ -10,6 +10,7 @@ import EventsList from "./pages/EventsList/EventsList";
 import EventDetail from "./pages/EventDetail/EventDetail";
 import CreateEvent from "./pages/CreateEvent/CreateEvent";
 import EditEvent from "./pages/EditEvent/EditEvent";
+import MyEvents from "./pages/MyEvents/MyEvents";
 import NotFound from "./pages/NotFound/NotFound";
 
 import "./App.scss";
@@ -24,6 +25,7 @@ export default function App() {
           <Route path="/" element={<EventsList />} />
           <Route path="/events" element={<EventsList />} />
           <Route path="/events/:id" element={<EventDetail />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
@@ -41,6 +43,15 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <EditEvent />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/my-events"
+            element={
+              <ProtectedRoute>
+                <MyEvents />
               </ProtectedRoute>
             }
           />

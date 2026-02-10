@@ -1,6 +1,6 @@
 📘 Projet Web — Gestion d’Événements
 
-Application complète permettant de créer, gérer et rejoindre des événements, avec authentification sécurisée, interface moderne en React, et API Node.js/Express  connectée à PostgreSQL.
+Application complète permettant de créer, gérer et rejoindre des événements, avec authentification sécurisée, interface moderne en React, et API Node.js/Express connectée à PostgreSQL.
 🚀 Fonctionnalités (User Stories)
 ID	Fonctionnalité	Statut
 US‑01	Inscription utilisateur	✔
@@ -20,7 +20,8 @@ Code
 
 Projet_Web/
 ├── event-backend/     → API Node.js + Express + PostgreSQL
-└── event-frontend/    → Interface React (Vite)
+├── event-frontend/    → Interface React (Vite)
+└── db/                → Scripts de déploiement + dump PostgreSQL
 
 Backend
 
@@ -47,7 +48,7 @@ Frontend
 ⚙️ Installation complète
 1) Prérequis
 
-    Node.js  ≥ 18
+    Node.js ≥ 18
 
     npm ≥ 9
 
@@ -219,28 +220,34 @@ Pourquoi une architecture en couches ?
 
     Protection contre champs interdits dans updateEvent
 
-🛠️ Script de déploiement avancé
+🛠️ Scripts de déploiement PostgreSQL (Linux/macOS/WSL + Windows)
 
-Un script deploy.sh est fourni dans :
+Le dossier :
 Code
 
-Projet_Web/script/deploy.sh
+Projet_Web/db/
 
-Il permet :
+contient :
 
-    Vérification des dépendances
+    deploy.sh → script Bash pour Linux, macOS et WSL
 
-    Création automatique de la base PostgreSQL
+    deploy.ps1 → script PowerShell pour Windows natif
 
-    Import des tables
+    projetweb.dump → dump PostgreSQL versionné
 
-    Installation backend
+Fonctionnalités des scripts
 
-    Installation frontend
+    Création automatique de la base projetweb
 
-    Vérifications finales
+    Import du dump (projetweb.dump)
 
-Il n’exécute pas les serveurs (option B validée).
+    Export de la base
+
+    Suppression de la base
+
+    Compatible multi‑OS
+
+Ces scripts permettent de déployer la base de données sur n’importe quelle machine sans configuration manuelle.
 👤 Auteur
 
 Projet réalisé par Eloi KRESS et son fidèle Copilote.
