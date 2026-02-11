@@ -73,3 +73,11 @@ export async function getPaginatedEvents(page = 1, limit = 10) {
   );
   return handleResponse(res);
 }
+
+/* ---------------- PARTICIPANTS PAGINÉS ---------------- */
+export async function getParticipants(eventId, page = 1, limit = 20) {
+  const res = await fetch(
+    `${API}/${eventId}/participants?page=${page}&limit=${limit}`
+  );
+  return handleResponse(res);
+}

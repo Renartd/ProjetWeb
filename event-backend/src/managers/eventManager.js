@@ -175,7 +175,37 @@ const eventManager = {
 
     const result = await db.query(query, [limit, offset]);
     return result.rows;
+  },
+
+  async getParticipantsPaginated(eventId, limit, offset) {
+    const query = `
+      SELECT 
+        u.id,
+        u.username
+      FROM registrations r
+      JOIN users u ON u.id = r.user_id
+      WHERE r.event_id = $1
+      ORDER BY u.username ASC
+      LIMIT $2 OFFSET $3;
+    `;
+
+    const totalQuery = `
+      SELECT COUNT(*) AS total
+      FROM registrations
+      WHERE event_id = $1;
+    `;
+
+    const [participantsRes, totalRes] = await Promise.all([
+      db.query(query, [eventId, limit, offset]),
+      db.query(totalQuery, [eventId])
+    ]);
+
+    return {
+      participants: participantsRes.rows,
+      total: Number(totalRes.rows[0].total)
+    };
   }
+
 
 };
 

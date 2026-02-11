@@ -7,6 +7,7 @@ import {
   unregisterEvent,
   deleteEvent
 } from "../../api/events";
+import ParticipantsModal from "./ParticipantsModal";
 import "./EventDetail.scss";
 
 const EventDetail = () => {
@@ -18,6 +19,8 @@ const EventDetail = () => {
   const [registered, setRegistered] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const [showParticipants, setShowParticipants] = useState(false);
 
   async function fetchEvent() {
     setError(null);
@@ -78,27 +81,25 @@ const EventDetail = () => {
   };
 
   const handleDelete = async () => {
-  if (!token) {
-    setError("Vous devez être connecté pour supprimer un événement.");
-    return;
-  }
+    if (!token) {
+      setError("Vous devez être connecté pour supprimer un événement.");
+      return;
+    }
 
-  // 🔒 Confirmation avant suppression
-  const ok = window.confirm(
-    "Voulez-vous vraiment supprimer cet événement ? Cette action est irréversible."
-  );
+    const ok = window.confirm(
+      "Voulez-vous vraiment supprimer cet événement ? Cette action est irréversible."
+    );
 
-  if (!ok) return; // L'utilisateur annule → on ne fait rien
+    if (!ok) return;
 
-  setError(null);
-  try {
-    await deleteEvent(id, token);
-    navigate("/events");
-  } catch (err) {
-    setError(err.message || "Erreur lors de la suppression.");
-  }
-};
-
+    setError(null);
+    try {
+      await deleteEvent(id, token);
+      navigate("/events");
+    } catch (err) {
+      setError(err.message || "Erreur lors de la suppression.");
+    }
+  };
 
   if (loading) return <p>Chargement...</p>;
   if (!event) return <p>Événement introuvable.</p>;
@@ -110,51 +111,32 @@ const EventDetail = () => {
     <div className="event-detail-page">
       <h2>{event.title}</h2>
 
-      <p>
-        <strong>Description :</strong> {event.description}
-      </p>
+      <p><strong>Description :</strong> {event.description}</p>
+      <p><strong>Date :</strong> {new Date(event.date).toLocaleString()}</p>
+      <p><strong>Lieu :</strong> {event.location}</p>
+      <p><strong>Places restantes :</strong> {event.remaining}</p>
 
-      <p>
-        <strong>Date :</strong>{" "}
-        {event.date ? new Date(event.date).toLocaleString() : "Date inconnue"}
-      </p>
+      <p><strong>Organisateur :</strong> {event.organizer.username}</p>
 
-      <p>
-        <strong>Lieu :</strong> {event.location || "Lieu inconnu"}
-      </p>
+      <button onClick={() => setShowParticipants(true)}>
+        Voir les participants ({event.participants.length})
+      </button>
 
-      <p>
-        <strong>Places restantes :</strong> {event.remaining ?? "?"}
-      </p>
-
-      {event.organizer && (
-        <p>
-          <strong>Organisateur :</strong> {event.organizer.username}
-        </p>
-      )}
-
-      <h3>Participants</h3>
-
-      {!event.participants || event.participants.length === 0 ? (
-        <p>Aucun participant pour le moment.</p>
-      ) : (
-        <ul>
-          {event.participants.map((p) => (
-            <li key={p.id}>{p.username}</li>
-          ))}
-        </ul>
+      {showParticipants && (
+        <ParticipantsModal
+          eventId={event.id}
+          onClose={() => setShowParticipants(false)}
+        />
       )}
 
       {error && <p className="error">{error}</p>}
 
       {user && !isOrganizer && (
-        <>
-          {registered ? (
-            <button onClick={handleUnregister}>Se désinscrire</button>
-          ) : (
-            <button onClick={handleRegister}>S'inscrire</button>
-          )}
-        </>
+        registered ? (
+          <button onClick={handleUnregister}>Se désinscrire</button>
+        ) : (
+          <button onClick={handleRegister}>S'inscrire</button>
+        )
       )}
 
       {isOrganizer && (

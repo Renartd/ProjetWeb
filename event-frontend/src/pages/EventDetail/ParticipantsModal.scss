@@ -1,0 +1,48 @@
+.participants-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.participants-modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 350px;
+  max-height: 70vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.participants-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.participants-list li {
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.close-btn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 8px;
+  background: #444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
