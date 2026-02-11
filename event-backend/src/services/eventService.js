@@ -39,6 +39,18 @@ const eventService = {
     }
 
     return eventManager.deleteEvent(id);
+  },
+
+  async updateEventImage(id, imageUrl, userId) {
+    const isOrganizer = await eventManager.isOrganizer(id, userId);
+
+    if (!isOrganizer) {
+      const err = new Error("Vous n'êtes pas l'organisateur de cet événement.");
+      err.status = 403;
+      throw err;
+    }
+
+    return eventManager.updateEventImage(id, imageUrl);
   }
 };
 

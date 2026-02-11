@@ -81,3 +81,19 @@ export async function getParticipants(eventId, page = 1, limit = 20) {
   );
   return handleResponse(res);
 }
+
+/* ---------------- UPLOAD IMAGE ---------------- */
+export async function uploadEventImage(eventId, file, token) {
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const res = await fetch(`${API}/${eventId}/image`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    body: formData
+  });
+
+  return handleResponse(res);
+}

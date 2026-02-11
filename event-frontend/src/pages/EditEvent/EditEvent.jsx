@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { getEvent, updateEvent } from "../../api/events";
+import { getEvent, updateEvent, uploadEventImage } from "../../api/events";
 import "./EditEvent.scss";
 
 export default function EditEvent() {
@@ -10,6 +10,7 @@ export default function EditEvent() {
   const { token } = useAuth();
 
   const [event, setEvent] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -22,7 +23,6 @@ export default function EditEvent() {
     e.preventDefault();
     setError(null);
 
-    // On construit un payload propre
     const payload = {
       title: event.title,
       description: event.description,
@@ -33,13 +33,39 @@ export default function EditEvent() {
 
     try {
       await updateEvent(id, payload, token);
+
+      if (imageFile) {
+        try {
+          await uploadEventImage(id, imageFile, token);
+        } catch (err) {
+          console.error("Erreur upload image:", err);
+          setError(
+            err.message ||
+              "Modification enregistrée, mais l'upload de l'image a échoué."
+          );
+        }
+      }
+
       navigate(`/events/${id}`);
     } catch (err) {
       setError(err.message);
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      setImageFile(null);
+      return;
+    }
+    setImageFile(file);
+  };
+
   if (!event) return <p>Chargement...</p>;
+
+  const imageUrl = event.image_url
+    ? `http://localhost:3000${event.image_url}`
+    : null;
 
   return (
     <div className="edit-event-page">
@@ -96,6 +122,24 @@ export default function EditEvent() {
             }
           />
         </label>
+
+        <div className="image-section">
+          <p>Image actuelle :</p>
+          {imageUrl ? (
+            <img src={imageUrl} alt={event.title} className="event-image-preview" />
+          ) : (
+            <p>Aucune image pour cet événement.</p>
+          )}
+
+          <label>
+            Changer l'image (optionnelle, max 2 Mo)
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+          </label>
+        </div>
 
         <button type="submit">Enregistrer</button>
       </form>

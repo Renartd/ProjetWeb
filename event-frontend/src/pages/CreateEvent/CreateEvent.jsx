@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { createEvent } from "../../api/events";
+import { createEvent, uploadEventImage } from "../../api/events";
 import "./CreateEvent.scss";
 
 const CreateEvent = () => {
@@ -13,6 +13,7 @@ const CreateEvent = () => {
   const [date, setDate] = useState("");
   const [location, setLocation] = useState("");
   const [capacity, setCapacity] = useState(10);
+  const [imageFile, setImageFile] = useState(null);
   const [error, setError] = useState(null);
 
   if (!user) {
@@ -24,7 +25,7 @@ const CreateEvent = () => {
     setError(null);
 
     try {
-      await createEvent(
+      const created = await createEvent(
         {
           title,
           description,
@@ -35,11 +36,32 @@ const CreateEvent = () => {
         token
       );
 
+      if (imageFile) {
+        try {
+          await uploadEventImage(created.id, imageFile, token);
+        } catch (err) {
+          console.error("Erreur upload image:", err);
+          setError(
+            err.message ||
+              "Événement créé, mais l'upload de l'image a échoué."
+          );
+        }
+      }
+
       navigate("/events");
     } catch (err) {
       console.error("Create event error:", err);
       setError(err.message);
     }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      setImageFile(null);
+      return;
+    }
+    setImageFile(file);
   };
 
   return (
@@ -97,6 +119,15 @@ const CreateEvent = () => {
             value={capacity}
             onChange={(e) => setCapacity(Number(e.target.value))}
             required
+          />
+        </label>
+
+        <label>
+          Image (optionnelle, max 2 Mo)
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
           />
         </label>
 

@@ -69,14 +69,12 @@ const eventManager = {
   async createEvent(event) {
     const { title, description, date, location, capacity, organizerId } = event;
 
-    // 🔒 Date passée
     const now = new Date();
     const eventDate = new Date(date);
     if (eventDate < now) {
       throw new Error("La date de l'événement ne peut pas être dans le passé.");
     }
 
-    // 🔒 Capacité positive
     if (capacity <= 0) {
       throw new Error("Le nombre de places doit être un nombre positif.");
     }
@@ -96,7 +94,6 @@ const eventManager = {
     const values = [];
     let index = 1;
 
-    // ❌ Champs non modifiables
     const forbidden = ["remaining", "organizer", "participants", "id", "organizer_id"];
 
     for (const key in data) {
@@ -104,7 +101,6 @@ const eventManager = {
         throw new Error(`Le champ '${key}' ne peut pas être modifié.`);
       }
 
-      // 🔒 Date passée
       if (key === "date") {
         const d = new Date(data[key]);
         if (d < new Date()) {
@@ -112,7 +108,6 @@ const eventManager = {
         }
       }
 
-      // 🔒 Capacité positive
       if (key === "capacity" && data[key] <= 0) {
         throw new Error("Le nombre de places doit être un nombre positif.");
       }
@@ -204,11 +199,18 @@ const eventManager = {
       participants: participantsRes.rows,
       total: Number(totalRes.rows[0].total)
     };
+  },
+
+  async updateEventImage(eventId, imageUrl) {
+    const result = await db.query(
+      `UPDATE events
+       SET image_url = $2
+       WHERE id = $1
+       RETURNING *`,
+      [eventId, imageUrl]
+    );
+    return result.rows[0] || null;
   }
-
-
 };
-
-
 
 module.exports = eventManager;

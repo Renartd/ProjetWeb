@@ -107,9 +107,19 @@ const EventDetail = () => {
   const isOrganizer =
     user && event.organizer && user.id === event.organizer.id;
 
+  const imageUrl = event.image_url
+    ? `http://localhost:3000${event.image_url}`
+    : null;
+
   return (
     <div className="event-detail-page">
       <h2>{event.title}</h2>
+
+      {imageUrl && (
+        <div className="event-detail-image-wrapper">
+          <img src={imageUrl} alt={event.title} className="event-detail-image" />
+        </div>
+      )}
 
       <p><strong>Description :</strong> {event.description}</p>
       <p><strong>Date :</strong> {new Date(event.date).toLocaleString()}</p>
