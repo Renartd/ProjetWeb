@@ -25,13 +25,21 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        token,
+        user,
+        setUser, // ✅ correction : on expose bien setUser dans le contexte
+        login,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 }
 
-// ⭐ Hook indispensable pour accéder à user, token, login, logout
+// ⭐ Hook indispensable pour accéder à user, token, login, logout, setUser
 export function useAuth() {
   return useContext(AuthContext);
 }

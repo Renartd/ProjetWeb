@@ -11,6 +11,7 @@ import EventDetail from "./pages/EventDetail/EventDetail";
 import CreateEvent from "./pages/CreateEvent/CreateEvent";
 import EditEvent from "./pages/EditEvent/EditEvent";
 import MyEvents from "./pages/MyEvents/MyEvents";
+import Profile from "./pages/Profile/Profile"; // ✅ ajout de la page profil
 import NotFound from "./pages/NotFound/NotFound";
 
 import "./App.scss";
@@ -52,6 +53,15 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <MyEvents />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             }
           />

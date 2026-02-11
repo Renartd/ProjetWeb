@@ -33,10 +33,10 @@ const registrationManager = {
 
   async getParticipants(eventId) {
     const result = await db.query(
-      `SELECT users.id, users.username
-       FROM registrations
-       JOIN users ON users.id = registrations.user_id
-       WHERE registrations.event_id = $1`,
+      `SELECT users.id, users.username, users.avatar_url
+      FROM registrations
+      JOIN users ON users.id = registrations.user_id
+      WHERE registrations.event_id = $1`,
       [eventId]
     );
     return result.rows;

@@ -43,9 +43,18 @@ export default function ParticipantsModal({ eventId, onClose }) {
           <p>Aucun participant.</p>
         ) : (
           <ul className="participants-list">
-            {participants.map((p) => (
-              <li key={p.id}>{p.username}</li>
-            ))}
+            {participants.map((p) => {
+              const avatar = p.avatar_url
+                ? `http://localhost:3000${p.avatar_url}`
+                : "/default-avatar.png";
+
+              return (
+                <li key={p.id} className="participant-item">
+                  <img src={avatar} className="avatar-small" alt="" />
+                  <span>{p.username}</span>
+                </li>
+              );
+            })}
           </ul>
         )}
 

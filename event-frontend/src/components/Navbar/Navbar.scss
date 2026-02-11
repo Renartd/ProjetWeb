@@ -43,6 +43,15 @@
       font-weight: 600;
     }
 
+    .avatar-small {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid $blue-light;
+    }
+
+
     button {
       @include button-primary;
       padding: 8px 14px;
