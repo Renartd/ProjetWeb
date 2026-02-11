@@ -13,8 +13,62 @@ US‑07	Création d’un événement	✔
 US‑08	Modification d’un événement	✔
 US‑09	Suppression d’un événement + confirmation	✔
 US‑10	Désinscription d’un événement	✔
+US‑11	Upload d’image pour un événement	✔ (NOUVEAU)
 
 Toutes les fonctionnalités demandées dans le sujet sont implémentées.
+🖼️ Upload d’image (NOUVEAU)
+
+Fonctionnalité ajoutée au backend + frontend :
+✔ Fonctionnement
+
+    L’organisateur peut uploader une image lors de la création ou modification d’un événement.
+
+    L’image est optionnelle.
+
+    L’image est affichée :
+
+        en miniature responsive dans la liste des événements (EventCard)
+
+        en grand dans la page de détail (EventDetail)
+
+✔ Sécurité
+
+    Seul l’organisateur peut uploader ou modifier l’image.
+
+    Vérification côté backend via isOrganizer.
+
+✔ Contraintes
+
+    Taille maximale : 2 Mo
+
+    Formats acceptés : uniquement image/*
+
+    Stockage local dans :
+    Code
+
+    event-backend/uploads/
+
+✔ Backend
+
+    Route dédiée :
+    Code
+
+    POST /api/events/:id/image
+
+    Utilisation de multer pour gérer l’upload.
+
+    Le backend sert les images via :
+    js
+
+    app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
+
+✔ Base de données
+
+Ajout de la colonne :
+sql
+
+ALTER TABLE events ADD COLUMN IF NOT EXISTS image_url TEXT;
+
 🏗️ Architecture du projet
 Code
 
@@ -35,6 +89,8 @@ Backend
 
     Architecture propre : controllers / services / managers
 
+    Upload d’image sécurisé (multer + vérification organisateur)
+
 Frontend
 
     React + Vite
@@ -43,7 +99,9 @@ Frontend
 
     Pages : Login, Signup, EventsList, EventDetail, CreateEvent, EditEvent
 
-    Composants réutilisables
+    Upload d’image via FormData
+
+    Miniatures responsive
 
 ⚙️ Installation complète
 1) Prérequis
@@ -66,6 +124,11 @@ Code
 
 npm install
 
+Installer multer (upload d’image)
+Code
+
+npm install multer
+
 Configurer le fichier .env
 
 Créer :
@@ -85,10 +148,15 @@ Code
 
 sudo -u postgres psql -d projetweb -f sql/create_registrations_table.sql
 
+Ajouter la colonne image_url (si pas déjà faite)
+Code
+
+psql -U projetweb_user -d projetweb -c "ALTER TABLE events ADD COLUMN IF NOT EXISTS image_url TEXT;"
+
 Lancer le backend
 Code
 
-node src/server.js
+npm run dev
 
 🎨 Installation du frontend
 
@@ -132,6 +200,8 @@ Events
     PUT /events/:id — modifier un événement
 
     DELETE /events/:id — supprimer un événement
+
+    POST /events/:id/image — uploader une image (organisateur uniquement)
 
 Registrations
 
@@ -190,7 +260,11 @@ Pourquoi une architecture en couches ?
 
     Validation des données
 
-    Protection contre mise à jour de champs sensibles (remaining, organizer, etc.)
+    Protection contre mise à jour de champs sensibles
+
+    Protection upload : seul l’organisateur peut envoyer une image
+
+    Limite de taille (2 Mo) + filtrage MIME
 
 📏 Règles métier
 
@@ -206,6 +280,8 @@ Pourquoi une architecture en couches ?
 
     Confirmation obligatoire avant suppression
 
+    Image optionnelle, mais contrôlée (taille + type)
+
 🐞 Bugs corrigés
 
     Erreur SQL : column remaining does not exist
@@ -220,7 +296,11 @@ Pourquoi une architecture en couches ?
 
     Protection contre champs interdits dans updateEvent
 
-🛠️ Scripts de déploiement PostgreSQL (Linux/macOS/WSL + Windows)
+    Correction backend pour servir les images (/uploads)
+
+    Ajout de multer + gestion des erreurs d’upload
+
+🛠️ Scripts de déploiement PostgreSQL
 
 Le dossier :
 Code
@@ -229,17 +309,17 @@ Projet_Web/db/
 
 contient :
 
-    deploy.sh → script Bash pour Linux, macOS et WSL
+    deploy.sh → script Bash (Linux/macOS/WSL)
 
-    deploy.ps1 → script PowerShell pour Windows natif
+    deploy.ps1 → script PowerShell (Windows)
 
     projetweb.dump → dump PostgreSQL versionné
 
-Fonctionnalités des scripts
+Fonctionnalités :
 
     Création automatique de la base projetweb
 
-    Import du dump (projetweb.dump)
+    Import du dump
 
     Export de la base
 
@@ -247,7 +327,6 @@ Fonctionnalités des scripts
 
     Compatible multi‑OS
 
-Ces scripts permettent de déployer la base de données sur n’importe quelle machine sans configuration manuelle.
 👤 Auteur
 
 Projet réalisé par Eloi KRESS et son fidèle Copilote.
