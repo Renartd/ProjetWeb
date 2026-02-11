@@ -69,11 +69,16 @@ const eventManager = {
   async createEvent(event) {
     const { title, description, date, location, capacity, organizerId } = event;
 
-    // 🔒 Sécurité : empêcher les dates passées
+    // 🔒 Date passée
     const now = new Date();
     const eventDate = new Date(date);
     if (eventDate < now) {
       throw new Error("La date de l'événement ne peut pas être dans le passé.");
+    }
+
+    // 🔒 Capacité positive
+    if (capacity <= 0) {
+      throw new Error("Le nombre de places doit être un nombre positif.");
     }
 
     const result = await db.query(
@@ -91,11 +96,26 @@ const eventManager = {
     const values = [];
     let index = 1;
 
-    // ❌ Champs calculés ou non modifiables
-    const forbidden = ["remaining", "organizer", "participants", "id"];
+    // ❌ Champs non modifiables
+    const forbidden = ["remaining", "organizer", "participants", "id", "organizer_id"];
 
     for (const key in data) {
-      if (forbidden.includes(key)) continue; // ← Ignore les champs interdits
+      if (forbidden.includes(key)) {
+        throw new Error(`Le champ '${key}' ne peut pas être modifié.`);
+      }
+
+      // 🔒 Date passée
+      if (key === "date") {
+        const d = new Date(data[key]);
+        if (d < new Date()) {
+          throw new Error("La date de l'événement ne peut pas être dans le passé.");
+        }
+      }
+
+      // 🔒 Capacité positive
+      if (key === "capacity" && data[key] <= 0) {
+        throw new Error("Le nombre de places doit être un nombre positif.");
+      }
 
       fields.push(`${key} = $${index}`);
       values.push(data[key]);

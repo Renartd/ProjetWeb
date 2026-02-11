@@ -35,18 +35,16 @@ function validateDate(field, value, checkNotPast = false) {
 function validateCreateEvent(data) {
   const { title, description, date, capacity } = data;
 
-  if (!title) return { field: "title", message: "Le titre est obligatoire" };
-  if (!date) return { field: "date", message: "La date est obligatoire" };
-  if (capacity == null)
-    return { field: "capacity", message: "La capacité est obligatoire" };
+  if (!title) return { field: "title", message: "Le titre est obligatoire." };
+  if (!description) return { field: "description", message: "La description est obligatoire." };
+  if (!date) return { field: "date", message: "La date est obligatoire." };
+  if (capacity == null) return { field: "capacity", message: "Le nombre de places est obligatoire." };
 
   const titleError = validateString("title", title, 3, 100);
   if (titleError) return { field: "title", message: titleError };
 
-  if (description) {
-    const descError = validateString("description", description, 3, 500);
-    if (descError) return { field: "description", message: descError };
-  }
+  const descError = validateString("description", description, 3, 500);
+  if (descError) return { field: "description", message: descError };
 
   const dateError = validateDate("date", date, true);
   if (dateError) return { field: "date", message: dateError };

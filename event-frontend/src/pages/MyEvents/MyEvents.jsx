@@ -14,8 +14,10 @@ export default function MyEvents() {
     async function fetchData() {
       try {
         const events = await getEvents();
+        console.log("Événements reçus :", events);
 
-        const mine = events.filter((e) => e.organizerId === user.id);
+
+        const mine = events.filter((e) => e.organizer_id === user.id);
         const registered = events.filter((e) =>
           e.participants?.includes(user.id)
         );

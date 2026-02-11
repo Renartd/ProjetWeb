@@ -6,6 +6,11 @@ const registrationService = {
     const event = await eventManager.getEventById(eventId);
     if (!event) throw new Error("EVENT_NOT_FOUND");
 
+    // 🔒 Impossible de s'inscrire à un événement passé
+    if (new Date(event.date) < new Date()) {
+      throw new Error("EVENT_PAST");
+    }
+
     const existing = await registrationManager.findByUserAndEvent(userId, eventId);
     if (existing) throw new Error("ALREADY_REGISTERED");
 
@@ -18,6 +23,9 @@ const registrationService = {
   },
 
   async unregister(userId, eventId) {
+    const event = await eventManager.getEventById(eventId);
+    if (!event) throw new Error("EVENT_NOT_FOUND");
+
     const existing = await registrationManager.findByUserAndEvent(userId, eventId);
     if (!existing) throw new Error("NOT_REGISTERED");
 
