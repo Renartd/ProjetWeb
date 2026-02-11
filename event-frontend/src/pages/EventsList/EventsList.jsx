@@ -54,9 +54,11 @@ export default function EventsList() {
       if (!endDate) return true;
       return new Date(e.date) <= new Date(endDate);
     })
-    .filter(e =>
-      !author || e.organizer?.toLowerCase().includes(author.toLowerCase())
-    );
+    .filter(e => {
+      const organizerName = e.organizer?.username ?? "";
+      return organizerName.toLowerCase().includes(author.toLowerCase());
+    })
+
 
   return (
     <div className="events-list-page">

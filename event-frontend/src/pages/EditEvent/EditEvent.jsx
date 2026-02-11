@@ -22,8 +22,17 @@ export default function EditEvent() {
     e.preventDefault();
     setError(null);
 
+    // On construit un payload propre
+    const payload = {
+      title: event.title,
+      description: event.description,
+      date: event.date,
+      location: event.location,
+      capacity: event.capacity
+    };
+
     try {
-      await updateEvent(id, event, token);
+      await updateEvent(id, payload, token);
       navigate(`/events/${id}`);
     } catch (err) {
       setError(err.message);
