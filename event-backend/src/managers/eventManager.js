@@ -2,7 +2,28 @@ const db = require("../db");
 
 const eventManager = {
   async getAllEvents() {
-    const result = await db.query("SELECT * FROM events ORDER BY date ASC");
+    const query = `
+      SELECT 
+        e.*,
+
+        json_build_object(
+          'id', u.id,
+          'username', u.username
+        ) AS organizer,
+
+        COALESCE(
+          json_agg(r.user_id) FILTER (WHERE r.user_id IS NOT NULL),
+          '[]'
+        ) AS participants
+
+      FROM events e
+      LEFT JOIN users u ON u.id = e.organizer_id
+      LEFT JOIN registrations r ON r.event_id = e.id
+      GROUP BY e.id, u.id
+      ORDER BY e.date ASC;
+    `;
+
+    const result = await db.query(query);
     return result.rows;
   },
 
