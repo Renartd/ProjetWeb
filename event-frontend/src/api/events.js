@@ -65,3 +65,11 @@ export async function unregisterEvent(id, token) {
   });
   return handleResponse(res);
 }
+
+/* ---------------- PAGINATION ---------------- */
+export async function getPaginatedEvents(page = 1, limit = 10) {
+  const res = await fetch(
+    `${API}/paginated?page=${page}&limit=${limit}`
+  );
+  return handleResponse(res);
+}

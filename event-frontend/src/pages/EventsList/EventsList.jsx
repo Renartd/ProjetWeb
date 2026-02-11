@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getEvents } from "../../api/events";
+import { getPaginatedEvents } from "../../api/events";
 import EventCard from "../../components/EventCard/EventCard";
 import "./EventsList.scss";
 
@@ -16,10 +16,15 @@ export default function EventsList() {
 
   const [showFilters, setShowFilters] = useState(false);
 
+  // Pagination
+  const [page, setPage] = useState(1);
+  const limit = 10; // nombre d'événements par page
+
   useEffect(() => {
     async function fetchEvents() {
+      setLoading(true);
       try {
-        const data = await getEvents();
+        const data = await getPaginatedEvents(page, limit);
         setEvents(data);
       } catch (err) {
         setError(err.message || "Erreur serveur. Impossible de charger les événements.");
@@ -29,7 +34,7 @@ export default function EventsList() {
     }
 
     fetchEvents();
-  }, []);
+  }, [page]);
 
   function resetFilters() {
     setSearch("");
@@ -57,8 +62,7 @@ export default function EventsList() {
     .filter(e => {
       const organizerName = e.organizer?.username ?? "";
       return organizerName.toLowerCase().includes(author.toLowerCase());
-    })
-
+    });
 
   return (
     <div className="events-list-page">
@@ -120,6 +124,24 @@ export default function EventsList() {
         {filteredEvents.map((event) => (
           <EventCard key={event.id} event={event} />
         ))}
+      </div>
+
+      {/* Pagination */}
+      <div className="pagination">
+        <button
+          disabled={page === 1}
+          onClick={() => setPage(page - 1)}
+        >
+          Page précédente
+        </button>
+
+        <span>Page {page}</span>
+
+        <button
+          onClick={() => setPage(page + 1)}
+        >
+          Page suivante
+        </button>
       </div>
     </div>
   );

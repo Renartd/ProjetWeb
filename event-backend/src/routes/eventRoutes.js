@@ -6,7 +6,26 @@ const {
   validateUpdateEvent,
 } = require("../validators/eventValidator");
 
+const eventManager = require("../managers/eventManager"); // Import nécessaire
+
 const router = express.Router();
+
+/* ---------------------- ROUTE PAGINATION ---------------------- */
+// ⚠️ Doit être AVANT "/:id"
+router.get("/paginated", async (req, res) => {
+  const limit = Number(req.query.limit) || 10;
+  const page = Number(req.query.page) || 1;
+  const offset = (page - 1) * limit;
+
+  try {
+    const events = await eventManager.getPaginatedEvents(limit, offset);
+    res.json(events);
+  } catch (err) {
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
+/* ---------------------- ROUTES STANDARD ---------------------- */
 
 router.get("/", eventController.list);
 router.get("/:id", eventController.get);
