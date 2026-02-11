@@ -9,6 +9,18 @@ const signup = async (req, res) => {
   try {
     const { username, password } = req.body;
 
+    if (!username) {
+      return res.status(400).json({ error: "L'identifiant est obligatoire." });
+    }
+
+    if (!password) {
+      return res.status(400).json({ error: "Le mot de passe est obligatoire." });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).json({ error: "Le mot de passe doit contenir au moins 8 caractères." });
+    }
+
     const user = await registerUser(username, password);
 
     const token = jwt.sign(
@@ -20,7 +32,12 @@ const signup = async (req, res) => {
     res.status(201).json({ user, token });
   } catch (err) {
     console.error("Signup error:", err);
-    res.status(500).json({ error: "Internal server error" });
+
+    if (err.message.includes("exists")) {
+      return res.status(400).json({ error: "Cet identifiant est déjà pris." });
+    }
+
+    res.status(500).json({ error: "Erreur interne du serveur." });
   }
 };
 
@@ -30,6 +47,10 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({ error: "Identifiant ou mot de passe manquant." });
+    }
 
     const user = await authenticateUser(username, password);
 
@@ -45,7 +66,7 @@ const login = async (req, res) => {
     });
   } catch (err) {
     console.error("Login error:", err);
-    res.status(401).json({ error: "Invalid credentials" });
+    res.status(401).json({ error: "Identifiant ou mot de passe incorrect." });
   }
 };
 
@@ -54,7 +75,7 @@ const login = async (req, res) => {
 // =========================
 const getProfile = async (req, res) => {
   res.json({
-    message: "Authenticated user",
+    message: "Utilisateur authentifié",
     user: req.user
   });
 };
